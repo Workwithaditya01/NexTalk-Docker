@@ -12,7 +12,7 @@ COPY . .
 
 RUN npm run build
 
-#----------Stage 2:Runner--------------
+#-----------Stage 2:Runner--------------
 
 FROM nginx:alpine
 
