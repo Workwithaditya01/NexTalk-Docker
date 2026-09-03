@@ -18,6 +18,6 @@ FROM nginx:alpine
 
 WORKDIR /app
 
-COPY --from=builder /app/dist /usr/share/nginx/html
+COPY --from=builder /app/dist /usr/share/nginx/html # Copy build into website file path
 
 CMD ["nginx","-g","daemon off;"]
