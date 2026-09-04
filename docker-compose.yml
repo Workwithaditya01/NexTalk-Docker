@@ -1,0 +1,30 @@
+services:
+  mongodb:
+    image: mongo:7
+    volumes:
+      - mongo_data:/data/db
+      - mongo_config:/data/configdb
+
+  backend:
+    build: ./backend
+    ports:
+      - "${BACKEND_HOST_PORT}:${BACKEND_PORT}"
+    depends_on:
+      - mongodb
+
+    environment:
+      MONGO_URI: mongodb://mongodb:27017/nextalk
+      JWT_SECRET: ${JWT_SECRET}
+
+  frontend:
+    build: ./frontend
+    depends_on:
+      - backend
+    ports:
+      - "${FRONTEND_HOST_PORT}:80"
+
+volumes:
+  mongo_data:
+  mongo_config:
+
+
