@@ -12,6 +12,8 @@
 
 ## 1. Project Overview
 
+![](https://github.com/Workwithaditya01/NexTalk-Docker/blob/ce302d71ed00de90f7fa4e4a4a93e7120d0661f9/Images/Applicaition%20images/Final%20Output.png)
+
 NexTalk is a real-time MERN-stack chat application.
 
 The original application provides:
@@ -29,38 +31,10 @@ The original application provides:
 
 This project focuses on **containerizing the application** and understanding how the individual services communicate.
 
+
 ### Application architecture
 
-```text
-                         USER / BROWSER
-                              |
-                              | HTTP
-                              v
-                  +-----------------------+
-                  |   Frontend Container  |
-                  |   React + Vite build  |
-                  |       Nginx :80       |
-                  +-----------+-----------+
-                              |
-                    /api/ and /socket.io/
-                              |
-                              v
-                  +-----------------------+
-                  |   Backend Container   |
-                  | Node.js + Express     |
-                  | Socket.IO             |
-                  |       :3000           |
-                  +-----------+-----------+
-                              |
-                         MongoDB URI
-                              |
-                              v
-                  +-----------------------+
-                  | MongoDB Container     |
-                  |       :27017          |
-                  |    Docker Volume      |
-                  +-----------------------+
-```
+![Systemdesign](https://github.com/Workwithaditya01/NexTalk-Docker/blob/ce302d71ed00de90f7fa4e4a4a93e7120d0661f9/system%20design.png)
 
 ---
 
@@ -147,10 +121,7 @@ docker network create nextalk-network
 Run MongoDB:
 
 ```bash
-docker run -d \
-  --name nextalk-mongodb \
-  --network nextalk-network \
-  mongo:7
+docker run -d --name nextalk-mongodb --network nextalk-network mongo:7
 ```
 
 Build the backend image:
@@ -162,14 +133,7 @@ docker build -t nextalk-backend ./backend
 Run the backend:
 
 ```bash
-docker run -d \
-  --name nextalk-backend \
-  --network nextalk-network \
-  -p 3001:3000 \
-  -e PORT=3000 \
-  -e MONGO_URI=mongodb://nextalk-mongodb:27017/nextalk \
-  -e JWT_SECRET=change_this_secret \
-  nextalk-backend
+docker run -d --name nextalk-backend --network nextalk-network -p 3001:3000 -e PORT=3000 -e MONGO_URI=mongodb://nextalk-mongodb:27017/nextalk nextalk-backend
 ```
 
 Check the container:
@@ -281,11 +245,7 @@ docker build -t nextalk-frontend ./frontend
 Because the frontend's Nginx configuration proxies requests to the backend service name, run the frontend on the same Docker network:
 
 ```bash
-docker run -d \
-  --name nextalk-frontend \
-  --network nextalk-network \
-  -p 4173:80 \
-  nextalk-frontend
+docker run -d --name nextalk-frontend --network nextalk-network 4173:80 nextalk-frontend
 ```
 
 Check:
